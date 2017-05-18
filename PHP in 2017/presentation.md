@@ -390,8 +390,18 @@ If you're still on PHP5 and haven't upgraded from mysql, do it sooner rather tha
 * No new syntax to learn
 * Beware of escaping issues - never trust your user input
 
+---
+
+# Templating - plain PHP
+
 ```php
-    <?= $user['bio'] ?> /* javascript:alert('Hello, world!'); */
+// Danger
+<?= $user['bio'] ?>
+// <script>javascript:alert('Hello, world!');</script>
+
+// Safety
+<?= htmlspecialchars($user['bio']) ?>
+// &lt;script&gt;javascript:alert('Hello, world!');&lt;/script&gt;
 ```
 
 ---
