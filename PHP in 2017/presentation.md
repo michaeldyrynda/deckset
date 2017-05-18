@@ -270,14 +270,7 @@ print $profile; // Michael Dyrynda - @michaeldyrynda
 
 ---
 
-# Coding practices
-
-* PHP is a vast language for developers of many experience levels
-* Easy to get started, flexible enough to be used at large scale
-
----
-
-# Coding practices - date and time
+# Date and time
 
 * Dates and times are hard
 * `DateTime` and `DateTimeImmutable` classes make life easier
@@ -286,7 +279,7 @@ print $profile; // Michael Dyrynda - @michaeldyrynda
 
 ---
 
-# Coding practices - date and time
+# Date and time
 
 ```php
 // DateTime
