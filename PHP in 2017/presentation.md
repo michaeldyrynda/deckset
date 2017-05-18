@@ -115,7 +115,7 @@ Cover many things about what code looks like
 
 ![right](images/tabs-spaces.gif)
 
-You don't **have** to follow these **but** it helps
+* You don't **have** to follow these **but** it helps
 
 ^ PSRs are all about increasing interoperability. Your editor or IDE of choice can most definitely be configured to handle code style and formatting for you. You focus on code, your editor will make sure your files are indented with spaces. Tools like the PHP Coding Standards fixer as part of your workflow will further help you.
 There are currently 8 accepted, 1 in review, 8 accepted, and 1 deprecated PSRs
@@ -375,8 +375,6 @@ class UserController
 * `PDO` - common interface for different persistence layers
  * ⚠️ Does not translate your queries
 * Framework abstractions - Doctrine, ActiveRecord, etc.
-
-![right,fit](images/i-heart-ar-shirt.jpg)
 
 ^ *mysql* was deprecated in 5.5 and removed in 7.0
 If you're still on PHP5 and haven't upgraded from mysql, do it sooner rather than later. It'll ease your transition to PHP7.
