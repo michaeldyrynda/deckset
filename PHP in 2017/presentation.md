@@ -427,6 +427,8 @@ If you're still on PHP5 and haven't upgraded from mysql, do it sooner rather tha
 
 ---
 
+[.build-lists: false]
+
 # Changing error behaviour
 
 * You can override which errors PHP displays - useful in production, as long as you log them somewhere
