@@ -1,3 +1,5 @@
+build-lists: true
+
 # PHP in 2017
 
 ---
