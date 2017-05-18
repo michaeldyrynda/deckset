@@ -278,7 +278,6 @@ print $profile; // Michael Dyrynda - @michaeldyrynda
 # Coding practices - date and time
 
 * Dates and times are hard
-* **Dates and times are hard**
 * `DateTime` and `DateTimeImmutable` classes make life easier
 * `DateTimeZone`, `DateInterval`, and `DatePeriod` complement them
 * `Carbon` makes life even easier, with terse method names
@@ -334,7 +333,7 @@ print Carbon::now('Australia/Adelaide')->addDay()->format('Y-m-d H:i:s');
 
 # Without dependency injection
 
-```php
+```php, [.highlight:5-8]
 class UserController
 {
     private $repo;
@@ -350,7 +349,7 @@ class UserController
 
 # With dependency injection
 
-```php
+```php, [.highlight:5-8]
 class UserController
 {
     private $repo;
@@ -368,15 +367,17 @@ class UserController
 
 # Databases
 
-* 🚨 ~~`mysql`~~ - deprecated (5.5) and removed (7.0)
+* 🚨 ~~`mysql`~~
 * `mysqli` - MySQL-improved, simple transition from `mysql`
   * Swapped args from (`$query`, `$link`) to (`$link`, `$query`)
-* `PDO` - a database abstraction library, available since *5.1*!
- * Common interface for different persistence layers
+* `PDO` - common interface for different persistence layers
  * ⚠️ Does not translate your queries
-* Framework abstractions - Doctrine, ❤️ ActiveRecord, etc.
+* Framework abstractions - Doctrine, ActiveRecord, etc.
 
-^ If you're still on PHP5 and haven't upgraded from mysql, do it sooner rather than later. It'll ease your transition to PHP7.
+![right,fit](images/i-heart-ar-shirt.jpg)
+
+^ *mysql* was deprecated in 5.5 and removed in 7.0
+If you're still on PHP5 and haven't upgraded from mysql, do it sooner rather than later. It'll ease your transition to PHP7.
 
 ---
 
@@ -528,7 +529,7 @@ A mechanism exists to determine if a hashed value needs rehashing.
 
 ^ This is useful when the time comes to upgrade algorithm, or when hashing options change
 
-```php
+```php, [.highlight:2-5]
 if (password_verify('secret', $hash)) {
     if (password_needs_rehash($hash, PASSWORD_DEFAULT, $options)) {
         // If so, create new hash and replace old one
