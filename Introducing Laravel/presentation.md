@@ -96,7 +96,7 @@ In general, when using a framework, somebody else has made decisions not only ab
 # _**The Laravel community**_
 
 > From the very beginning of Laravel, I've had this idea that all people want to feel like they are part of something. It's a natural human instinct to want to belong and be accepted into a group of other like-minded people. So, by injecting personality into a web framework and being really active with the community, that type of feeling can grow in the community.
--- Taylor Otwell
+-- Taylor Otwell, Creator of Laravel
 
 ^ One of the distinguishing elements of Laravel that has contributed to its grown and success, is the welcoming, teaching community that surrounds it. From Jeffrey Way's Laracasts video tutorials, to Laravel News, to Slack and IRC, to countless people on Twitter and blogs sharing their experiences, and the Laracon conferences. Laravel has a rich and vibrant community of folks who've been around since day one and many more who are on their first day.
 
