@@ -1,6 +1,5 @@
 theme:Plain Jane, 7
 build-lists: true
-slidenumbers: true
 
 # [fit] **Introducing** _**Laravel**_
 
