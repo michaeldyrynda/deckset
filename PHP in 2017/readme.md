@@ -4,7 +4,7 @@ A look at some best practices, and new features available in PHP when developing
 
 Presented at:
 
-* PHP Adelaide - Thursday May 18th, 2017
+* PHP Adelaide - Thursday May 18th, 2017 - [Recording](https://www.youtube.com/watch?v=X5j-8KDCOl0)
 
 Resources:
 
