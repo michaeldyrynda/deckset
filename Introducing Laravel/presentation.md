@@ -98,7 +98,7 @@ In general, when using a framework, somebody else has made decisions not only ab
 > From the very beginning of Laravel, I've had this idea that all people want to feel like they are part of something. It's a natural human instinct to want to belong and be accepted into a group of other like-minded people. So, by injecting personality into a web framework and being really active with the community, that type of feeling can grow in the community.
 -- Taylor Otwell, Creator of Laravel
 
-^ One of the distinguishing elements of Laravel that has contributed to its grown and success, is the welcoming, teaching community that surrounds it. From Jeffrey Way's Laracasts video tutorials, to Laravel News, to Slack and IRC, to countless people on Twitter and blogs sharing their experiences, and the Laracon conferences. Laravel has a rich and vibrant community of folks who've been around since day one and many more who are on their first day.
+^ One of the distinguishing elements of Laravel that has contributed to its growth and success, is the welcoming, teaching community that surrounds it. From Jeffrey Way's Laracasts video tutorials, to Laravel News, to Slack and IRC, to countless people on Twitter and blogs sharing their experiences, and the Laracon conferences. Laravel has a rich and vibrant community of folks who've been around since day one and many more who are on their first day.
 
 ---
 
@@ -138,7 +138,7 @@ class WelcomeController extends Controller
 # _**Why Laravel?**_
 
 > Because Laravel helps you bring your ideas to reality with no wasted code, using modern coding standards, supported by a vibrant community, with an empowering ecosystem of tools.
-> And because you, dear developer, deserve to be happy
+> And because you, dear developer, deserve to be happy.
 -- Matt Stauffer, Laravel Up and Runnig
 
 ---
@@ -152,7 +152,7 @@ class WelcomeController extends Controller
 * Laravel Homestead (Vagrant VM)
 
 ^ Valet - lightweight, local environment. Makes it easy to serve folders in a given base directory on a local domain
-^ Homestead - makes it much easier to replicate your production environment in dev, particularly if you use Laravel Forge for server management
+- Homestead - makes it much easier to replicate your production environment in dev, particularly if you use Laravel Forge for server management
 
 ---
 
@@ -161,7 +161,7 @@ class WelcomeController extends Controller
 ## Using the Laravel installer
 
 ```bash
-composer global require "laravel/installer=~1.1"
+composer global require "laravel/installer"
 laravel new projectName
 ```
 
@@ -172,11 +172,12 @@ composer create-project laravel/laravel projectName --prefer-dist
 ```
 
 ---
+[.build-lists: false]
 
 # _**Configuration**_
 
-* The core settings of your Laravel application live in files in the `config` folder.
-* These files simpley return an array
+* The core settings of your Laravel application live in files in the `config` folder
+* These files simply return an array
 
 ```php
 // config/app.php
@@ -233,9 +234,9 @@ Route::get('/{name}', function ($name) {
 });
 ```
 
-^ * Common to use the same name for route parameter and method variable
-* Not required unless you're using route/model binding
-* Parameters are passed to their receiving method in order from left to right
+^ - Common to use the same name for route parameter and method variable
+- Not required unless you're using route/model binding
+- Parameters are passed to their receiving method in order from left to right
 
 ---
 
@@ -276,7 +277,7 @@ Route::get('/{name}', function ($name) {
 </html>
 ```
 
-^ As you can imagine, defining all of your presentation logic in the routes file will get unwieldly fast.
+^ As you can imagine, defining all of your business and presentation logic in the routes file will get unwieldly fast.
 
 ---
 [.build-lists: false]
@@ -286,7 +287,7 @@ Route::get('/{name}', function ($name) {
 * Controllers are another part of the MVC pattern
 * Organise the logic of one or more routes together in one place
 * Tend to group similar routes together, particularly if your application is structured as a traditional CRUD-application
-* Controller will typically handle Create, Read, Update, and Delete operations for a resource
+* Controllers will typically handle Create, Read, Update, and Delete operations for a resource
 
 ```bash
 php artisan make:controller WelcomeController
@@ -336,12 +337,12 @@ Route::get('/contact', 'ContactController@create'); // Display the contact form
 Route::post('/contact', 'ContactController@store'); // Save the contact details
 
 // app/Http/Controllers/ContactController.php
-public function store()
+public function store(Request $request)
 {
     $contact = new Contact;
-    $contact->name = Input::get('name');
-    $contact->email = Input::get('email');
-    $contact->message = Input::get('message');
+    $contact->name = $request->input('name');
+    $contact->email = request()->input('email');
+    $contact->message = request('message');
     $contact->save();
 
     return redirect('thank-you');
@@ -357,6 +358,8 @@ A common routing pattern is to use the first line(s) of a controller to find the
 ```php, [.highlight: 2]
 Route::get('users/{id}', function ($id) {
     $user = User::findOrFail($id);
+
+    return view('users.show')->with('user', $user);
 });
 ```
 
@@ -393,9 +396,11 @@ Route::get('users/{user}', function (User $user) {
 
 # _**Form method spoofing**_
 
-```html, [.highlight: 2]
+```html, [.highlight: 2-4]
 <form action="/users/42" method="POST">
     <input type="hidden" name="_method" value="DELETE">
+    <!-- or simply -->
+    {{ method_field('DELETE') }}
 </form>
 ```
 
@@ -408,7 +413,7 @@ Route::get('users/{user}', function (User $user) {
 
 * Cross-site request forgery
 * If you've ever tried submitting a form already, you have come across a `TokenMismatchException`
-* Protects all non-'read-only' routes (`GET`, `HEAD`, or `OPTIONS`) by default by requiring a token be passed along with each request
+* Protects all non-read-only routes (`GET`, `HEAD`, or `OPTIONS`) by default by requiring a token be passed along with each request
 * Token generated at the start of every seassion
 * Every non-read-only route compares the submitted token with the session token
 
@@ -420,9 +425,9 @@ Laravel provides a convenient way of working around this
 
 ```html, [.highlight: 2-4]
 <form action="/users/42" method="POST">
-    <input type="hidden" name="_token" value="<?= csrf_token() ?>">"
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">"
     <!-- or simply -->
-    <?= csrf_field() ?>
+    {{ csrf_field() }}
     <input type="hidden" name="_method" value="DELETE">
 </form>
 ```
@@ -431,7 +436,7 @@ Laravel provides a convenient way of working around this
 
 # _**CSRF Projection**_
 
-Laravel is configured to support CSRF tokens with it's suggested JavaScript HTTP client, Axios:
+Laravel is configured to support CSRF tokens with its suggested JavaScript HTTP client, Axios:
 
 ```html
 <head>
@@ -454,10 +459,10 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 
 * Compared to most backend languages, PHP functions relatively well as a templating language
 * Most modern frameworks include a templating language
-* Laravel offers a custom engine called Blade, inspired by .NET's Razoer engine
+* Laravel offers a custom engine called Blade, inspired by .NET's Razor engine
 * Concise syntax, shallow learning curve, powerful and intuitive inheritance, and easy extensibility
 
-^ * PHP has its shortcomings as a templating language, and using `<?php` inline all over the place is ugly
+^ - PHP has its shortcomings as a templating language, and using `<?php` inline all over the place is ugly
 
 ---
 
@@ -473,11 +478,11 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 @endforelse
 ```
 
-^ Blade introduces a convention through its custom tags, called directives, are prefixed with an @
-* Directives used for all control structures, inheritance, and any custom functionality you add
-* The syntax is clean and concise, and aims to be more pleasant and tidy to work with than some of the alternatives
-* Data is escaped automatically when you use the mustache-notation for echoing data
-* Just like the best Laravel components, it takes complex requirements and makes them easy and accessible
+^ Blade introduces a convention through its custom tags, called directives, and are prefixed with an @
+- Directives used for all control structures, inheritance, and any custom functionality you add
+- The syntax is clean and concise, and aims to be more pleasant and tidy to work with than some of the alternatives
+- Data is escaped automatically when you use the mustache-notation for echoing data
+- Just like the best Laravel components, it takes complex requirements and makes them easy and accessible
 
 ---
 [.build-lists: false]
@@ -561,9 +566,9 @@ Work the same way in Blade as they do in PHP
 ```
 
 ^ Looks mostly like plain HTML, but you can see we've yielded in two places (title and content), and we've defined a section in a third (footerScripts)
-* Three directives that each look a little different - @yield('title') with a defined default, @yield('content') alone, and @section ... @show with content in it
-* All three function essentially the same. All three define that there's a section with a given name (first parameter). All three are defining that the section can be extended later. All three define what to do if the section isn't extended, either by providing a string fallback, no fallback (which shows nothing), or an entire block fallback.
-* What's different? @yield('content') has no default content. The default content in @yield('title') will only be shown if it's never extended. If it's extended, the child sections will not have programmatic access to the default value. @section ... @show is both defining a default and doing so in a way that the default contents will be available to its children, through the @parent directive
+- Three directives that each look a little different - @yield('title') with a defined default, @yield('content') alone, and @section ... @show with content in it
+- All three function essentially the same. All three define that there's a section with a given name (first parameter). All three are defining that the section can be extended later. All three define what to do if the section isn't extended, either by providing a string fallback, no fallback (which shows nothing), or an entire block fallback.
+- What's different? @yield('content') has no default content. The default content in @yield('title') will only be shown if it's never extended. If it's extended, the child sections will not have programmatic access to the default value. @section ... @show is both defining a default and doing so in a way that the default contents will be available to its children, through the @parent directive
 
 ---
 
@@ -624,7 +629,7 @@ Work the same way in Blade as they do in PHP
 ```
 
 ^ @include pulls in the partial and, optionally, passes data into it
-* You can explicitly pass data to the included partial, or you can reference variables in the included file from the including view
+- You can explicitly pass data to the included partial, or you can reference variables in the included file from the including view
 
 ---
 
@@ -635,6 +640,7 @@ Work the same way in Blade as they do in PHP
 * Laravel also provides a webpack-based build system called Mix
 
 ---
+[.build-lists: false]
 
 # _**Mix**_
 
@@ -648,20 +654,20 @@ mix.js('resources/assets/js/app.js', 'public/js')
 ```
 
 ^ Allows you to compile CSS pre-processors like LESS and SASS into plain CSS
-* Provides several features such as compiling ECMAScript 2015 JS syntax to conventional JS
-* Handles module bundling, minification and concatenation of JS files
-* Makes it easy to extract vendor libraries to their own JS file
-* Handles copying files and directories
-* Makes it easy to version your assets, allowing you to set long expire headers to leverage browser caching, without having people stuck with old assets
+- Provides several features such as compiling ECMAScript 2015 JS syntax to conventional JS
+- Handles module bundling, minification and concatenation of JS files
+- Makes it easy to extract vendor libraries to their own JS file
+- Handles copying files and directories
+- Makes it easy to version your assets, allowing you to set long expire headers to leverage browser caching, without having people stuck with old assets
 
 ---
 
 # _**Handling user data**_
 
 * Websites that benefit most from a framework often don't just serve static content
-* Many deal withi complex and mixed data sources
-* The most commen (and most complex) is user input
-* Laravel provides tools for gathering, validationg, normalising, and filtering user-provided datra
+* Many deal with complex and mixed data sources
+* The most common (and most complex) is user input
+* Laravel provides tools for gathering, validationg, normalising, and filtering user-provided data
 
 ^ User input can come from URL paths, query parameters, POST data, and file uploads
 
@@ -676,7 +682,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
 
 ---
 
-# _**Handling user data - injecting a request object**_method
+# _**Handling user data - injecting a request object**_
 
 ```php, [.highlight: 1]
 Route::post('form', function (Illuminate\Http\Request $request) {
@@ -740,6 +746,7 @@ $request->input('first_name', 'Anonymous');
 ```
 
 ---
+[.build-lists: false]
 
 # _**Validation**_
 
@@ -770,7 +777,7 @@ class PostController extends Controller
 * Laravel provides a suite of tools for interacting with your application's databases
 * The most notable tool is Eloquent, Laravel's ActiveRecord ORM implementation
 * Eloquent is one of Laravel's most popular and influential features
-* Simple; one class per table, which is responsible for retrieving,r epresenting, and persisting data to that table
+* Simple; one class per table, which is responsible for retrieving, representing, and persisting data to that table
 
 ---
 
@@ -786,7 +793,6 @@ class PostController extends Controller
 # _**Migrations**_
 
 ```php
-// Laravel's default user table migration
 <?php
 
 use Illuminate\Support\Facades\Schema;
@@ -930,3 +936,61 @@ $user = new User;
 $user->name = 'Jordan';
 $user->save();
 ```
+
+---
+
+# _**Eloquent compared to the fluent builder**_
+
+```php
+// Retrieving all users - builder
+$users = DB::table('users')->get();
+
+// Retrieving all users - Eloquent
+$users = User::all();
+
+// Creating a user - builder
+DB::table('users')->insert([
+    'name' => 'Michael', 'email' => 'michael@example.com'
+]);
+
+// Creating a user - Eloquent
+User::create(['name' => 'Michael', 'email' => 'michael@example.com']);
+```
+
+---
+
+![left,fit](images/laravel-up-and-running.jpg)
+
+# _**Laravel Up and Running**_
+
+The best way to learn Laravel today.
+
+If you’re a capable PHP developer looking to learn Laravel for the first time, a novice Laravel developer looking to level up, or an experienced Laravel developer looking to learn a few new tricks, this book is for you. It’s clear, concise, and will get you up and running creating powerful and flexible apps in Laravel in no time.
+
+> laravelupandrunning.com
+
+^Thanks to Matt Stauffer, who authored the book
+
+---
+
+![right,fit](images/laracasts.png)
+
+# _**Laracasts**_
+
+The most concise screencasts for the working developer, updated daily.
+
+Laracasts is the defacto educational resource specifically for working developers building the web with PHP and JavaScript. It's kinda like Netflix for your career!
+
+> laracasts.com
+
+---
+
+# [fit]_**¿Questions?**_
+
+---
+
+# Thank you
+
+* Michael Dyrynda - @michaeldyrynda
+* North Meets South Web Podcast - @northsouthaudio
+* Laravel News Podcast - @laravelnews
